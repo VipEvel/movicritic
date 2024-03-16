@@ -1,49 +1,42 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { NoImage } from "@/assets/Icons";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import axios from "axios";
 
 const MovieLists = () => {
+  const [moviesList, setMoviesList] = useState([]);
 
-  const projectLists = [
-    {
-      id: "p-1",
-      title: "project 1",
-      desc: "dekhte hain",
-      img: "",
-      release: "1, jan 2024",
-      rating: "4",
-      link: "",
-      github: "",
-    },
-    {
-      id: "p-2",
-      title: "project 2",
-      desc: "dekhte hain",
-      img: "",
-      release: "1, jan 2024",
-      link: "",
-      rating: "4",
-      github: "",
-    },
-    {
-      id: "p-3",
-      title: "project 3",
-      release: "1, jan 2024",
-      desc: "dekhte hain",
-      rating: "4",
-      img: "",
-      link: "",
-      github: "",
-    },
-  ];
+  useEffect(() => {
+    getMovieLists();
+  }, []);
 
+  const getMovieLists = async () => {
+    axios
+      .get("/api/movies")
+      .then((response) => {
+        setMoviesList(response?.data?.data || []);
+      })
+      .catch((error) => {
+        setMoviesList([]);
+        console.error("Error:", error.response.data);
+      });
+  };
 
-  const handleDelete = () => {};
+  const handleDelete = (id) => {
+    axios
+      .delete(`/api/movies?id=${id}`)
+      .then((response) => {
+        getMovieLists();
+      })
+      .catch((error) => {
+        console.error("Error:", error.response.data);
+      });
+  };
 
   return (
     <motion.div
@@ -54,7 +47,7 @@ const MovieLists = () => {
     >
       <div className=" flex flex-wrap gap-4">
         <AnimatePresence>
-          {projectLists?.map((project) => (
+          {moviesList?.map((movie) => (
             <>
               <motion.div
                 initial={{ scale: 0 }}
@@ -80,23 +73,23 @@ const MovieLists = () => {
                   <Link href="#">
                     <div className="h-full">
                       <div className="text-xl font-[400] mb-3 capitalize">
-                        {project?.title}
+                        {movie?.movieTitle}
                       </div>
                       <div className="flex text-sm flex-col gap-3">
                         <div className="text-base">
-                          Released: {project?.release}
+                          Released: {movie?.releaseDate}
                         </div>
                         <div className="text-base font-bold">
-                          Rating: {project.rating}
+                          Rating: {movie.averageRating}
                         </div>
                       </div>
                     </div>
                   </Link>
                   <div className="flex w-full justify-end text-xl gap-4">
-                    <Link href="/editMovie/12">
+                    <Link href={`/editMovie/${movie?._id}`}>
                       <FaEdit className="text-indigo-400" />
                     </Link>
-                    <button onClick={handleDelete}>
+                    <button onClick={() => handleDelete(movie?._id)}>
                       <FaTrash className="text-red-500" />
                     </button>
                   </div>

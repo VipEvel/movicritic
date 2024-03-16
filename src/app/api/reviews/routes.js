@@ -1,14 +1,14 @@
 import connectMongoDB from "@/libs/mongodb";
-import Movies from "@/models/movieSchema";
 import { NextResponse } from "next/server";
+import Review from "@/models/reviewSchema";
 
 export async function POST(request) {
-  const { movieTitle, releaseDate } = await request.json();
+  const { movieid, rating, name, comment } = await request.json();
   // Connect to the database
   await connectMongoDB();
-  await Movies.create({ movieTitle, releaseDate });
+  await Review.create({ movieid, rating, name, comment });
   return NextResponse.json(
-    { message: "Movie added succefully!" },
+    { message: "Review added succefully!" },
     { status: 201 }
   );
 }
@@ -16,9 +16,9 @@ export async function POST(request) {
 export async function GET() {
   // Connect to the database
   await connectMongoDB();
-  const moviesList = await Movies.find();
+  const reviewList = await Review.find();
   return NextResponse.json(
-    { message: "Movies list fetched succefully!", data: moviesList },
+    { message: "Reviews list fetched succefully!", data: reviewList },
     { status: 200 }
   );
 }
@@ -27,9 +27,9 @@ export async function DELETE(request) {
   const id = request.nextUrl.searchParams.get("id");
   // Connect to the database
   await connectMongoDB();
-  await Movies.findByIdAndDelete(id);
+  await Review.findByIdAndDelete(id);
   return NextResponse.json(
-    { message: "Movie deleted succefully!" },
+    { message: "Review deleted succefully!" },
     { status: 200 }
   );
 }

@@ -19,7 +19,6 @@ const SearchComponent = ({ onSearch }) => {
       if (onSearch) {
         onSearch();
       }
-      console.log("Enter key pressed!");
     }
   };
 

@@ -1,9 +1,11 @@
-// AddNewMovie.js
+'use client'
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-const AddNewMovie = ({ mode, initialValues, onSubmit }) => {
+const AddNewMovie = ({ mode, initialValues = {}, onSubmit }) => {
+  console.log(initialValues);
   return (
     <motion.div
       className="h-full"
@@ -30,8 +32,9 @@ const AddNewMovie = ({ mode, initialValues, onSubmit }) => {
             }}
             onSubmit={onSubmit}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, initialValues }) => (
               <Form className="flex flex-col w-full gap-8">
+                {console.log(initialValues)}
                 <div className="form-input bg-white shadow-md rounded-xl p-4 relative ring-2 ring-indigo-400">
                   <Field
                     type="text"
