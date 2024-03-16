@@ -1,5 +1,6 @@
 import connectMongoDB from "@/libs/mongodb";
 import Movies from "@/models/movieSchema";
+import Review from "@/models/reviewSchema";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -27,6 +28,7 @@ export async function DELETE(request) {
   const id = request.nextUrl.searchParams.get("id");
   // Connect to the database
   await connectMongoDB();
+  await Review.deleteMany({ movie: id });
   await Movies.findByIdAndDelete(id);
   return NextResponse.json(
     { message: "Movie deleted succefully!" },

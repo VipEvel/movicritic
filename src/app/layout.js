@@ -5,8 +5,8 @@ import TransitionProvider from "@/components/provider/TransitionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Portfolio - Vipin Sharma",
-  description: "Let's Build Together",
+  title: "MovieCritic: Vipin Sharma",
+  description: "Let's Review",
 };
 
 export default function RootLayout({ children }) {
