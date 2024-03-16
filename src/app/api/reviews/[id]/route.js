@@ -16,15 +16,20 @@ export async function PUT(request, { params }) {
 
 export async function GET(request, { params }) {
   const { id } = params;
+  const all = request.nextUrl.searchParams.get("all") === "true";
   try {
     // Connect to the MongoDB database
     await connectMongoDB();
-
-    const reviews = await Review.find({ movie: id }).exec();
+    let reviews;
+    if (all) {
+      reviews = await Review.find({ movie: id }).exec();
+    } else {
+      reviews = await Review.findOne({ _id: id });
+    }
 
     return NextResponse.json(
       { message: "Review fetched successfully!", data: reviews },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     console.error("Error adding review:", error);

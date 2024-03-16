@@ -18,9 +18,8 @@ const MovieDetails = ({ params }) => {
   const getReviewLists = async () => {
     console.log(id);
     axios
-      .get(`/api/reviews/${id}`)
+      .get(`/api/reviews/${id}?all=true`)
       .then((response) => {
-        console.log(response?.data?.data);
         setReviewList(response?.data?.data || []);
       })
       .catch((error) => {
@@ -56,7 +55,7 @@ const MovieDetails = ({ params }) => {
         <div className=" flex flex-col gap-4">
           <AnimatePresence>
             {reviewList?.map((review) => (
-              <>
+              <React.Fragment key={review?._id}>
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{
@@ -69,6 +68,7 @@ const MovieDetails = ({ params }) => {
                   }}
                   className="rounded-2xl p-4 border-2 border-black/10 bg-white w-full hover:shadow-md"
                 >
+                  {console.log(review)}
                   <motion.div
                     whileHover="hover"
                     className="flex flex-col w-full gap-4 h-full"
@@ -81,24 +81,29 @@ const MovieDetails = ({ params }) => {
                     <div className="h-full w-full flex gap-4 justify-between items-end">
                       <div className="flex flex-col gap-3 w-full">
                         <div className="text-base break-words">
-                          {review?.release}
+                          {review?.comment}
                         </div>
-                        <div className="text-base italic">
-                          By {review.rating}
+                        <div className="text-base italic capitalize">
+                          By {review?.name}
                         </div>
                       </div>
-                      <div className="flex justify-end text-xl gap-4 items-center">
-                        <Link href="/editReview/12">
-                          <FaEdit className="text-indigo-400" />
-                        </Link>
-                        <button onClick={() => handleDelete(review?._id)}>
-                          <FaTrash className="text-red-500" />
-                        </button>
+                      <div>
+                        <div className="text-xl text-indigo-500 text-right mb-3">
+                          {review?.rating}/10
+                        </div>
+                        <div className="flex justify-end text-xl gap-4 items-center">
+                          <Link href={`/editReview/${review?._id}`}>
+                            <FaEdit className="text-indigo-400" />
+                          </Link>
+                          <button onClick={() => handleDelete(review?._id)}>
+                            <FaTrash className="text-red-500" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
                 </motion.div>
-              </>
+              </React.Fragment>
             ))}
           </AnimatePresence>
         </div>

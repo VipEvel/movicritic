@@ -37,6 +37,7 @@ const ReviewForm = ({ mode, initialValues, onSubmit }) => {
             {mode === "add" ? "Add New Review" : "Edit Review"}
           </h1>
           <Formik
+          enableReinitialize
             initialValues={
               initialValues || {
                 movie: "",
@@ -62,7 +63,7 @@ const ReviewForm = ({ mode, initialValues, onSubmit }) => {
             }}
           >
             {({ isSubmitting }) => (
-              <Form className="flex flex-col w-full gap-8">
+              <Form className="flex flex-col w-full gap-8">{console.log(initialValues)}
                 <div className="form-input bg-white shadow-md rounded-xl p-4 relative ring-2 ring-indigo-400">
                   <Field
                     as="select"

@@ -15,7 +15,6 @@ export default function Home() {
     >
       <div className="h-full w-full flex flex-col p-4 sm:px-8 md:px-12 lg:px-20 2xl:px-48 gap-16">
         <h1 className="text-3xl mt-10">The best movie review site!</h1>
-        <SearchComponent />
         <MovieLists />
       </div>
     </motion.div>
