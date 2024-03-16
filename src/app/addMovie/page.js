@@ -3,9 +3,10 @@
 import React from "react";
 import axios from "axios";
 import AddNewMovie from "@/components/common/MovieForm";
-import { Router } from "next/router";
+import { useRouter } from "next/navigation";
 
 const AddMoviePage = () => {
+  const router = useRouter();
   // For adding a new movie
   const handleAddMovie = async (values, { setSubmitting }) => {
     await axios
@@ -14,7 +15,7 @@ const AddMoviePage = () => {
         releaseDate: values?.releaseDate,
       })
       .then(() => {
-        Router.push("/");
+        router.push("/");
       })
       .catch((error) => {
         console.error("Error:", error.response.data);

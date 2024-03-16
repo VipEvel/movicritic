@@ -3,10 +3,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { NoImage } from "@/assets/Icons";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import moment from "moment";
 
 const MovieLists = () => {
   const [moviesList, setMoviesList] = useState([]);
@@ -77,10 +77,11 @@ const MovieLists = () => {
                       </div>
                       <div className="flex text-sm flex-col gap-3">
                         <div className="text-base">
-                          Released: {movie?.releaseDate}
+                          <span className="mr-2">Released:</span>
+                          {moment(movie?.releaseDate).format("DD MMM, YYYY")}
                         </div>
                         <div className="text-base font-bold">
-                          Rating: {movie.averageRating}
+                          Rating: {movie.averageRating || 0}
                         </div>
                       </div>
                     </div>

@@ -50,7 +50,16 @@ const ReviewForm = ({ mode, initialValues, onSubmit }) => {
               // Add validation logic here if needed
               return errors;
             }}
-            onSubmit={onSubmit}
+            onSubmit={(values, { isSubmitting }) => {
+              onSubmit(
+                {
+                  ...values,
+                  title: moviesList?.find((item) => item?._id === values?.movie)
+                    ?.movieTitle,
+                },
+                { isSubmitting }
+              );
+            }}
           >
             {({ isSubmitting }) => (
               <Form className="flex flex-col w-full gap-8">

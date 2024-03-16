@@ -3,18 +3,19 @@
 import React from "react";
 import ReviewForm from "@/components/common/ReviewForm";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const AddReviewPage = () => {
+  const router = useRouter();
   // For adding a new review
   const handleReviewSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     await axios
-      .post("/api/reviews", { ...values, movieid: movie })
-      .then(() => {
-        Router.push("/");
+      .post("/api/reviews", { ...values })
+      .then((res) => {
+        router.push("/");
       })
       .catch((error) => {
-        console.error("Error:", error.response.data);
+        console.error("Error:", error);
       });
   };
 

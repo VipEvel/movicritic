@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const reviewSchema = new Schema({
   movie: { type: Schema.Types.ObjectId, ref: "Movie" },
   rating: Number,
+  title: String,
   name: String,
   comment: String,
 });

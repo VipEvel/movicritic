@@ -7,16 +7,18 @@ import { NoImage } from "@/assets/Icons";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 
-const MovieDetails = () => {
+const MovieDetails = ({ params }) => {
+  const { id } = params;
   const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {
-    getMovieLists();
+    getReviewLists();
   }, []);
 
-  const getMovieLists = async () => {
+  const getReviewLists = async () => {
+    console.log(id);
     axios
-      .get("/api/reviews")
+      .get(`/api/reviews/${id}`)
       .then((response) => {
         console.log(response?.data?.data);
         setReviewList(response?.data?.data || []);
@@ -27,11 +29,11 @@ const MovieDetails = () => {
       });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (reviewId) => {
     axios
-      .delete(`/api/reviews?id=${id}`)
+      .delete(`/api/reviews?id=${reviewId}`)
       .then((response) => {
-        getMovieLists();
+        getReviewLists();
       })
       .catch((error) => {
         console.error("Error:", error.response.data);
