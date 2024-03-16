@@ -39,9 +39,22 @@ const MovieLists = () => {
       });
   };
 
+  const onSearch = (val) => {
+    console.log(val);
+    axios
+      .get(`/api/search?query=${val}`)
+      .then((response) => {
+        setMoviesList(response?.data?.data || []);
+      })
+      .catch((error) => {
+        setMoviesList([]);
+        console.error("Error:", error.response.data);
+      });
+  };
+
   return (
     <>
-      <SearchComponent />
+      <SearchComponent onSearch={onSearch} />
       <motion.div
         className="h-full"
         initial={{ y: "-200vh" }}

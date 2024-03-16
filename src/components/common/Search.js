@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 
 const SearchComponent = ({ onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [value, setValue] = useState("");
 
   const handleInputFocus = () => {
     setIsFocused(true);
@@ -17,7 +18,7 @@ const SearchComponent = ({ onSearch }) => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       if (onSearch) {
-        onSearch();
+        onSearch(value);
       }
     }
   };
@@ -31,6 +32,8 @@ const SearchComponent = ({ onSearch }) => {
       <FaSearch className="text-gray-500 font-thin" />
       <input
         type="text"
+        value={value}
+        onChange={(e) => setValue(e?.target?.value)}
         placeholder="Search for your favourite movie"
         className="ml-5 w-full h-10 focus:border-none focus:outline-none"
         onFocus={handleInputFocus}
