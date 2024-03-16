@@ -3,15 +3,28 @@ import Movies from "@/models/movieSchema";
 import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
-  const { id } = params;
-  const { movieTitle, releaseDate } = request.json();
-  // Connect to the database
-  await connectMongoDB();
-  await Movies.findByIdAndUpdate(id, { movieTitle, releaseDate });
-  return NextResponse.json(
-    { message: "Movie updated succefully!" },
-    { status: 200 }
-  );
+  try {
+    const { id } = params;
+    const { movieTitle, releaseDate } = await request.json();
+
+    // Connect to the database
+    await connectMongoDB();
+
+    // Update the movie
+    await Movies.findByIdAndUpdate(id, { movieTitle, releaseDate });
+
+    // Return success response
+    return NextResponse.json(
+      { message: "Movie updated successfully!" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error updating movie:", error);
+    return NextResponse.json(
+      { message: "Error updating movie." },
+      { status: 500 }
+    );
+  }
 }
 
 export async function GET(request, { params }) {

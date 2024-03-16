@@ -1,10 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const ReviewForm = ({ mode, initialValues, onSubmit }) => {
+  const [moviesList, setMoviesList] = useState([]);
+
+  useEffect(() => {
+    getMovieLists();
+  }, []);
+
+  const getMovieLists = async () => {
+    axios
+      .get("/api/movies")
+      .then((response) => {
+        setMoviesList(response?.data?.data || []);
+      })
+      .catch((error) => {
+        setMoviesList([]);
+        console.error("Error:", error.response.data);
+      });
+  };
+
   return (
     <motion.div
       className="h-full"
@@ -42,7 +61,11 @@ const ReviewForm = ({ mode, initialValues, onSubmit }) => {
                     className="focus:outline-none w-full"
                   >
                     <option value="">Select a movie</option>
-                    <option value="option1">Option 1</option>
+                    {moviesList?.map((movie) => (
+                      <option key={movie?._id} value={movie?._id}>
+                        {movie?.movieTitle}
+                      </option>
+                    ))}
                   </Field>
                   <ErrorMessage
                     className="text-red-500 text-right w-full"

@@ -1,47 +1,42 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { NoImage } from "@/assets/Icons";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import axios from "axios";
 
 const MovieDetails = () => {
-  const reviewList = [
-    {
-      id: "p-1",
-      title: "project 1",
-      desc: "dekhte hain",
-      img: "",
-      release: "1, jan 2024",
-      rating: "4",
-      link: "",
-      github: "",
-    },
-    {
-      id: "p-2",
-      title: "project 2",
-      desc: "dekhte hain",
-      img: "",
-      release: "1, jan 2024",
-      link: "",
-      rating: "4",
-      github: "",
-    },
-    {
-      id: "p-3",
-      title: "project 3",
-      release: "1, jan 2024",
-      desc: "dekhte hain",
-      rating: "4",
-      img: "",
-      link: "",
-      github: "",
-    },
-  ];
+  const [reviewList, setReviewList] = useState([]);
 
-  const handleDelete = () => {};
+  useEffect(() => {
+    getMovieLists();
+  }, []);
+
+  const getMovieLists = async () => {
+    axios
+      .get("/api/reviews")
+      .then((response) => {
+        console.log(response?.data?.data);
+        setReviewList(response?.data?.data || []);
+      })
+      .catch((error) => {
+        setReviewList([]);
+        console.error("Error:", error.response.data);
+      });
+  };
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`/api/reviews?id=${id}`)
+      .then((response) => {
+        getMovieLists();
+      })
+      .catch((error) => {
+        console.error("Error:", error.response.data);
+      });
+  };
 
   return (
     <motion.div
@@ -58,7 +53,7 @@ const MovieDetails = () => {
 
         <div className=" flex flex-col gap-4">
           <AnimatePresence>
-            {reviewList?.map((project) => (
+            {reviewList?.map((review) => (
               <>
                 <motion.div
                   initial={{ scale: 0 }}
@@ -83,16 +78,18 @@ const MovieDetails = () => {
                     </div>
                     <div className="h-full w-full flex gap-4 justify-between items-end">
                       <div className="flex flex-col gap-3 w-full">
-                        <div className="text-base break-words">{project?.release}</div>
+                        <div className="text-base break-words">
+                          {review?.release}
+                        </div>
                         <div className="text-base italic">
-                          By {project.rating}
+                          By {review.rating}
                         </div>
                       </div>
                       <div className="flex justify-end text-xl gap-4 items-center">
                         <Link href="/editReview/12">
                           <FaEdit className="text-indigo-400" />
                         </Link>
-                        <button onClick={handleDelete}>
+                        <button onClick={() => handleDelete(review?._id)}>
                           <FaTrash className="text-red-500" />
                         </button>
                       </div>

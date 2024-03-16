@@ -1,15 +1,21 @@
 "use client";
 
+import React from "react";
 import ReviewForm from "@/components/common/ReviewForm";
-import React, { useState } from "react";
+import axios from "axios";
 
 const AddReviewPage = () => {
   // For adding a new review
-  const handleReviewSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
+  const handleReviewSubmit = async (values, { setSubmitting }) => {
+    console.log(values);
+    await axios
+      .post("/api/reviews", { ...values, movieid: movie })
+      .then(() => {
+        Router.push("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error.response.data);
+      });
   };
 
   return (

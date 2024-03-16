@@ -22,7 +22,7 @@ const EditMoviePage = ({ params }) => {
         setMoviesDetails(response?.data?.data || []);
       })
       .catch((error) => {
-        setMoviesDetails({});
+        // setMoviesDetails({});
         console.error("Error:", error.response.data);
       });
   };
@@ -37,7 +37,7 @@ const EditMoviePage = ({ params }) => {
         Router.push("/");
       })
       .catch((error) => {
-        setMoviesDetails({});
+        // setMoviesDetails({});
         console.error("Error:", error.response.data);
       });
   };

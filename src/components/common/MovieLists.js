@@ -48,7 +48,7 @@ const MovieLists = () => {
       <div className=" flex flex-wrap gap-4">
         <AnimatePresence>
           {moviesList?.map((movie) => (
-            <>
+            <React.Fragment key={movie?._id}>
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{
@@ -70,7 +70,7 @@ const MovieLists = () => {
                       <NoImage />
                     </div>
                   </div>
-                  <Link href="#">
+                  <Link href={`/movieDetails/${movie?._id}`}>
                     <div className="h-full">
                       <div className="text-xl font-[400] mb-3 capitalize">
                         {movie?.movieTitle}
@@ -95,7 +95,7 @@ const MovieLists = () => {
                   </div>
                 </motion.div>
               </motion.div>
-            </>
+            </React.Fragment>
           ))}
         </AnimatePresence>
       </div>
