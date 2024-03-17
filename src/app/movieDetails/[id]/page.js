@@ -31,7 +31,6 @@ const MovieDetails = ({ params }) => {
   };
 
   const getReviewLists = async () => {
-    console.log(id);
     axios
       .get(`/api/reviews/${id}?all=true`)
       .then((response) => {
@@ -83,7 +82,6 @@ const MovieDetails = ({ params }) => {
                   }}
                   className="rounded-2xl p-4 border-2 border-black/10 bg-white w-full hover:shadow-md"
                 >
-                  {console.log(review)}
                   <motion.div
                     whileHover="hover"
                     className="flex flex-col w-full gap-4 h-full"

@@ -40,7 +40,6 @@ const MovieLists = () => {
   };
 
   const onSearch = (val) => {
-    console.log(val);
     axios
       .get(`/api/search?query=${val}`)
       .then((response) => {

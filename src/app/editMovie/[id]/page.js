@@ -19,7 +19,6 @@ const EditMoviePage = ({ params }) => {
     await axios
       .get(`/api/movies/${id}`)
       .then((response) => {
-        console.log(response);
         setMoviesDetails(response?.data?.data || []);
       })
       .catch((error) => {

@@ -15,7 +15,6 @@ const EditReviewPage = ({ params }) => {
   }, []);
 
   const getReviewData = async () => {
-    console.log(id);
     axios
       .get(`/api/reviews/${id}?all=false`)
       .then((response) => {
