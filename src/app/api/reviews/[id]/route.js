@@ -9,7 +9,7 @@ export async function PUT(request, { params }) {
   await connectMongoDB();
   await Review.findByIdAndUpdate(id, { movie, title, rating, name, comment });
   return NextResponse.json(
-    { message: "Review updated succefully!" },
+    { message: "Review updated successfully!" },
     { status: 200 }
   );
 }

@@ -10,13 +10,25 @@ import { useSearchParams } from "next/navigation";
 
 const MovieDetails = ({ params }) => {
   const { id } = params;
-  const query = useSearchParams();
-  const title = query.get("title");
   const [reviewList, setReviewList] = useState([]);
+  const [movieDetails, setMoviesDetails] = useState({});
 
   useEffect(() => {
     getReviewLists();
+    getMovieDetails();
   }, []);
+
+  const getMovieDetails = async () => {
+    await axios
+      .get(`/api/movies/${id}`)
+      .then((response) => {
+        setMoviesDetails(response?.data?.data || {});
+      })
+      .catch((error) => {
+        setMoviesDetails({});
+        console.error("Error:", error.response.data);
+      });
+  };
 
   const getReviewLists = async () => {
     console.log(id);
@@ -51,8 +63,8 @@ const MovieDetails = ({ params }) => {
     >
       <div className="h-full w-full flex flex-col p-4 sm:px-8 md:px-12 lg:px-20 2xl:px-48 gap-16">
         <div className="text-3xl mt-10 flex justify-between">
-          <h1 className="">{title}</h1>
-          <div className="text-indigo-500">{`8.8 / 10`}</div>
+          <h1 className="">{movieDetails?.movieTitle}</h1>
+          <div className="text-indigo-500">{`${movieDetails?.averageRating} / 10`}</div>
         </div>
 
         <div className=" flex flex-col gap-4">

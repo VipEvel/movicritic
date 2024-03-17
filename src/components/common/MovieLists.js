@@ -86,7 +86,9 @@ const MovieLists = () => {
                         <NoImage />
                       </div>
                     </div>
-                    <Link href={`/movieDetails/${movie?._id}?title=${movie?.movieTitle}`}>
+                    <Link
+                      href={`/movieDetails/${movie?._id}?title=${movie?.movieTitle}`}
+                    >
                       <div className="h-full">
                         <div className="text-xl font-[400] mb-3 capitalize">
                           {movie?.movieTitle}
@@ -97,7 +99,8 @@ const MovieLists = () => {
                             {moment(movie?.releaseDate).format("DD MMM, YYYY")}
                           </div>
                           <div className="text-base font-bold">
-                            Rating: {movie.averageRating || 0}
+                            <span className="mr-2">Rating:</span>
+                            {`${movie.averageRating || 0} / 10`}
                           </div>
                         </div>
                       </div>

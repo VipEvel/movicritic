@@ -1,5 +1,6 @@
 import connectMongoDB from "@/libs/mongodb";
 import Movies from "@/models/movieSchema";
+import Reviews from "@/models/reviewSchema";
 import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
@@ -28,12 +29,52 @@ export async function PUT(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-  const { id } = params;
-  // Connect to the database
-  await connectMongoDB();
-  const movieDetail = await Movies.findOne({ _id: id });
-  return NextResponse.json(
-    { message: "Movie details fetched succefully!", data: movieDetail },
-    { status: 200 }
-  );
+  try {
+    const { id } = params;
+
+    // Connect to the database
+    await connectMongoDB();
+
+    // Find the movie details by id
+    const movieDetail = await Movies.findOne({ _id: id });
+
+    // Aggregate pipeline to calculate average rating for the movie
+    const averageRatingResult = await Reviews.aggregate([
+      {
+        $match: { movie: movieDetail._id },
+      },
+      {
+        $group: {
+          _id: null,
+          averageRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+
+    // Extract average rating from aggregation result
+    const averageRating =
+      averageRatingResult.length > 0
+        ? averageRatingResult[0].averageRating
+        : null;
+
+    // Append the average rating to the movie detail object
+    const movieDetailWithAvgRating = {
+      ...movieDetail.toObject(),
+      averageRating,
+    };
+
+    return NextResponse.json(
+      {
+        message: "Movie details fetched successfully!",
+        data: movieDetailWithAvgRating,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    return NextResponse.error(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

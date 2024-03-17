@@ -9,19 +9,43 @@ export async function POST(request) {
   await connectMongoDB();
   await Movies.create({ movieTitle, releaseDate });
   return NextResponse.json(
-    { message: "Movie added succefully!" },
+    { message: "Movie added successfully!" },
     { status: 201 }
   );
 }
 
 export async function GET() {
-  // Connect to the database
-  await connectMongoDB();
-  const moviesList = await Movies.find();
-  return NextResponse.json(
-    { message: "Movies list fetched succefully!", data: moviesList },
-    { status: 200 }
-  );
+  try {
+    // Connect to the database
+    await connectMongoDB();
+
+    // Aggregate pipeline to fetch movies with average ratings
+    const moviesList = await Movies.aggregate([
+      {
+        $lookup: {
+          from: "reviews", // Assuming the name of the reviews collection
+          localField: "_id",
+          foreignField: "movie",
+          as: "reviews",
+        },
+      },
+      {
+        $addFields: {
+          averageRating: { $avg: "$reviews.rating" },
+        },
+      },
+    ]);
+    return NextResponse.json(
+      { message: "Movies list fetched successfully!", data: moviesList },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return NextResponse.error(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(request) {
@@ -31,7 +55,7 @@ export async function DELETE(request) {
   await Review.deleteMany({ movie: id });
   await Movies.findByIdAndDelete(id);
   return NextResponse.json(
-    { message: "Movie deleted succefully!" },
+    { message: "Movie deleted successfully!" },
     { status: 200 }
   );
 }

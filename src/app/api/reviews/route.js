@@ -33,7 +33,7 @@ export async function DELETE(request) {
   await connectMongoDB();
   await Review.findByIdAndDelete(id);
   return NextResponse.json(
-    { message: "Review deleted succefully!" },
+    { message: "Review deleted successfully!" },
     { status: 200 }
   );
 }
