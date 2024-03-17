@@ -86,7 +86,7 @@ const MovieLists = () => {
                         <NoImage />
                       </div>
                     </div>
-                    <Link href={`/movieDetails/${movie?._id}`}>
+                    <Link href={`/movieDetails/${movie?._id}?title=${movie?.movieTitle}`}>
                       <div className="h-full">
                         <div className="text-xl font-[400] mb-3 capitalize">
                           {movie?.movieTitle}

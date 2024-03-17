@@ -3,12 +3,13 @@
 import AddNewMovie from "@/components/common/MovieForm";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Router } from "next/router";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 const EditMoviePage = ({ params }) => {
   const { id } = params;
   const [moviesDetails, setMoviesDetails] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     getMovieDetails();
@@ -34,7 +35,7 @@ const EditMoviePage = ({ params }) => {
         releaseDate: values?.releaseDate,
       })
       .then((response) => {
-        Router.push("/");
+        router.push("/");
       })
       .catch((error) => {
         // setMoviesDetails({});

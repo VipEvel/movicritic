@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hide scrollbar track and set thumb color */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* Set width of scrollbar */
+}
+
+/* Hide scrollbar track */
+::-webkit-scrollbar-track {
+  display: none; /* Hide scrollbar track */
+}
+
+/* Style scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #6366f1; /* Set color of scrollbar thumb */
+  border-radius: 10px; /* Set border radius of scrollbar thumb */
+}

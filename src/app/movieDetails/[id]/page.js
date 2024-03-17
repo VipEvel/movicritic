@@ -6,9 +6,12 @@ import Link from "next/link";
 import { NoImage } from "@/assets/Icons";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 
 const MovieDetails = ({ params }) => {
   const { id } = params;
+  const query = useSearchParams();
+  const title = query.get("title");
   const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const MovieDetails = ({ params }) => {
     >
       <div className="h-full w-full flex flex-col p-4 sm:px-8 md:px-12 lg:px-20 2xl:px-48 gap-16">
         <div className="text-3xl mt-10 flex justify-between">
-          <h1 className="">The best movie review site!</h1>
+          <h1 className="">{title}</h1>
           <div className="text-indigo-500">{`8.8 / 10`}</div>
         </div>
 

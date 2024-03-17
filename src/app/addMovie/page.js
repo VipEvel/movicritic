@@ -22,9 +22,17 @@ const AddMoviePage = () => {
       });
   };
 
+  const handleCancel = () => {
+    router.push("/");
+  };
+
   return (
     <>
-      <AddNewMovie mode="add" onSubmit={handleAddMovie} />
+      <AddNewMovie
+        mode="add"
+        onSubmit={handleAddMovie}
+        onCancel={handleCancel}
+      />
     </>
   );
 };

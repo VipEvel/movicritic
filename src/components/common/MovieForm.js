@@ -1,11 +1,10 @@
-'use client'
+"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-const AddNewMovie = ({ mode, initialValues = {}, onSubmit }) => {
-  console.log(initialValues);
+const AddNewMovie = ({ mode, initialValues = {}, onSubmit, onCancel }) => {
   return (
     <motion.div
       className="h-full"
@@ -19,6 +18,7 @@ const AddNewMovie = ({ mode, initialValues = {}, onSubmit }) => {
             {mode === "add" ? "Add new movie" : "Edit movie"}
           </h1>
           <Formik
+            enableReinitialize
             initialValues={initialValues}
             validate={(values) => {
               const errors = {};
@@ -34,7 +34,6 @@ const AddNewMovie = ({ mode, initialValues = {}, onSubmit }) => {
           >
             {({ isSubmitting, initialValues }) => (
               <Form className="flex flex-col w-full gap-8">
-                {console.log(initialValues)}
                 <div className="form-input bg-white shadow-md rounded-xl p-4 relative ring-2 ring-indigo-400">
                   <Field
                     type="text"
@@ -60,17 +59,30 @@ const AddNewMovie = ({ mode, initialValues = {}, onSubmit }) => {
                     component="div"
                   />
                 </div>
-                <motion.button
-                  type="submit"
-                  whileHover={{
-                    boxShadow: "4px 4px 11px -3px #a4a4a4",
-                    backgroundColor: "rgba(16,36,231)",
-                  }}
-                  disabled={isSubmitting}
-                  className="rounded-xl bg-indigo-600 h-20 text-white font-bold text-2xl"
-                >
-                  {mode === "add" ? "Add Movie" : "Update Movie"}
-                </motion.button>
+                <div className="flex gap-4 w-full">
+                  <motion.button
+                    type="submit"
+                    whileHover={{
+                      boxShadow: "4px 4px 11px -3px #a4a4a4",
+                      backgroundColor: "rgba(16,36,231)",
+                    }}
+                    disabled={isSubmitting}
+                    className="rounded-xl px-2 w-1/2 bg-indigo-600 h-20 text-white font-bold text-2xl"
+                  >
+                    {mode === "add" ? "Add Movie" : "Update Movie"}
+                  </motion.button>
+                  <motion.button
+                    whileHover={{
+                      boxShadow: "4px 4px 11px -3px #a4a4a4",
+                      backgroundColor: "rgba(241,20,20)",
+                    }}
+                    disabled={isSubmitting}
+                    onClick={() => onCancel(values)}
+                    className="rounded-xl px-2 w-1/2 bg-red-500 h-20 text-white font-bold text-2xl"
+                  >
+                    Cancel
+                  </motion.button>
+                </div>
               </Form>
             )}
           </Formik>

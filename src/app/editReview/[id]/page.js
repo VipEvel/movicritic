@@ -3,10 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReviewForm from "@/components/common/ReviewForm";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const EditReviewPage = ({ params }) => {
   const { id } = params;
   const [reviewData, setReviewData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     getReviewData();
@@ -37,12 +39,14 @@ const EditReviewPage = ({ params }) => {
     await axios
       .put(`/api/reviews/${id}`, finalVal)
       .then((response) => {
-        Router.push("/");
+        router.push(`/movieDetails/${values?.movie}`);
       })
       .catch((error) => {
-        // setMoviesDetails({});
         console.error("Error:", error.response.data);
       });
+  };
+  const handleCancel = (values) => {
+    router.push(`/movieDetails/${values?.movie}`);
   };
 
   return (
@@ -51,6 +55,7 @@ const EditReviewPage = ({ params }) => {
         mode="edit"
         initialValues={reviewData}
         onSubmit={handleEditReview}
+        onCancel={handleCancel}
       />
     </>
   );

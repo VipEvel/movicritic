@@ -17,7 +17,7 @@ const TransitionProvider = ({ children }) => {
         <div className="h-20">
           <NavBar />
         </div>
-        <div className="h-[calc(100vh-6rem)] vip-body overflow-auto">{children}</div>
+        <div className="h-[calc(100vh-6rem)] overflow-auto">{children}</div>
       </div>
     </AnimatePresence>
   );
